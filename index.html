@@ -43,47 +43,111 @@ body {
 
 /* ─── NAV ─── */
 .nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255,255,255,0.92);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(255,255,255,0.96);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--gray-100);
   transition: box-shadow 0.3s;
 }
 .nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
 .nav-inner {
-  max-width: 1200px; margin: 0 auto;
+  max-width: 1280px; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 32px; height: 72px;
 }
 .logo {
   font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
   color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
 }
 .logo-mark {
   width: 36px; height: 36px; background: linear-gradient(135deg, var(--teal), var(--navy));
   border-radius: 10px; display: flex; align-items: center; justify-content: center;
   color: white; font-size: 1.1rem; font-weight: 800;
 }
-.nav-links { display: flex; gap: 32px; align-items: center; }
-.nav-links a {
-  text-decoration: none; color: var(--gray-600); font-size: 0.95rem;
-  font-weight: 500; transition: color 0.2s; position: relative;
+
+/* Nav items */
+.nav-links { display: flex; gap: 2px; align-items: center; }
+.nav-item { position: relative; }
+.nav-item > a, .nav-item > button {
+  display: inline-flex; align-items: center; gap: 4px;
+  text-decoration: none; color: var(--gray-600); font-size: 0.9rem; font-weight: 500;
+  padding: 8px 12px; border-radius: 6px; border: none; background: none; cursor: pointer;
+  font-family: var(--font-body); transition: color 0.15s, background 0.15s; white-space: nowrap;
 }
-.nav-links a:hover { color: var(--navy); }
-.nav-links a.has-dropdown::after {
-  content: '▾'; margin-left: 4px; font-size: 0.7rem;
+.nav-item > a:hover, .nav-item > button:hover,
+.nav-item.open > a, .nav-item.open > button { color: var(--navy); background: var(--gray-100); }
+.nav-chevron {
+  width: 14px; height: 14px; color: var(--gray-400); transition: transform 0.2s; flex-shrink: 0;
 }
-.nav-cta { display: flex; gap: 12px; align-items: center; }
+.nav-item.open .nav-chevron { transform: rotate(180deg); color: var(--navy); }
+
+/* Dropdown base */
+.dropdown {
+  position: absolute; top: calc(100% + 10px); left: 0;
+  background: #fff; border-radius: 16px;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+  z-index: 500;
+}
+.nav-item.open .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+
+/* Products mega-menu */
+.dropdown-mega {
+  width: 820px; padding: 28px 8px 20px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+  left: -160px;
+}
+.mega-col { padding: 0 18px; }
+.mega-col:not(:last-child) { border-right: 1px solid var(--gray-100); }
+.mega-col-title {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--gray-400); margin-bottom: 14px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--gray-100);
+}
+.mega-item {
+  display: block; text-decoration: none; padding: 9px 8px; border-radius: 8px;
+  transition: background 0.12s; margin-bottom: 1px;
+}
+.mega-item:hover { background: var(--off-white); }
+.mega-item-label { font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+.mega-item-desc { font-size: 0.76rem; color: var(--gray-400); line-height: 1.45; }
+
+/* Use cases dropdown */
+.dropdown-usecases { width: 230px; padding: 12px; }
+
+/* Developers dropdown */
+.dropdown-simple { width: 210px; padding: 12px; }
+
+/* Resources dropdown */
+.dropdown-resources { width: 360px; padding: 20px 8px; display: grid; grid-template-columns: 1fr 1fr; }
+#nav-resources .dropdown { left: auto; right: 0; }
+.dropdown-section { padding: 0 14px; }
+.dropdown-section:first-child { border-right: 1px solid var(--gray-100); }
+.dropdown-section-title {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--gray-400); margin-bottom: 10px;
+}
+.dd-item {
+  display: block; text-decoration: none; padding: 8px 10px; border-radius: 7px;
+  font-size: 0.875rem; font-weight: 500; color: var(--gray-600);
+  transition: background 0.12s, color 0.12s;
+}
+.dd-item:hover { background: var(--off-white); color: var(--navy); }
+
+.nav-cta { display: flex; gap: 10px; align-items: center; }
 .btn-ghost {
-  padding: 10px 20px; border-radius: 8px; text-decoration: none;
-  font-weight: 600; font-size: 0.9rem; color: var(--navy); transition: background 0.2s;
+  padding: 9px 18px; border-radius: 8px; text-decoration: none;
+  font-weight: 600; font-size: 0.88rem; color: var(--navy); transition: background 0.2s;
 }
 .btn-ghost:hover { background: var(--teal-glow); }
 .btn-primary {
-  padding: 10px 24px; border-radius: 8px; text-decoration: none;
-  font-weight: 600; font-size: 0.9rem; color: var(--white);
+  padding: 9px 20px; border-radius: 8px; text-decoration: none;
+  font-weight: 600; font-size: 0.88rem; color: var(--white);
   background: linear-gradient(135deg, var(--navy), #1a5c72);
   transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer;
+  font-family: var(--font-body);
 }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(20,58,79,0.3); }
 .btn-teal {
@@ -583,19 +647,158 @@ body {
 <nav class="nav" id="nav">
   <div class="nav-inner">
     <a href="#" class="logo">
-      <div class="logo-mark">N</div>
+      <div class="logo-mark">R</div>
       RivoFi
     </a>
+
     <div class="nav-links">
-      <a href="#products" class="has-dropdown">Products</a>
-      <a href="#developers">Developers</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#">Docs</a>
-      <a href="#">Company</a>
+
+      <!-- Products -->
+      <div class="nav-item" id="nav-products">
+        <button onclick="toggleNav('nav-products')">
+          Products
+          <svg class="nav-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+        <div class="dropdown dropdown-mega">
+          <div class="mega-col">
+            <div class="mega-col-title">Payments</div>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Pay By Bank</div>
+              <div class="mega-item-desc">Instant bank payments</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Recurring Payments</div>
+              <div class="mega-item-desc">Enable flexible recurring payments</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Payouts</div>
+              <div class="mega-item-desc">Seamless payouts within your app</div>
+            </a>
+          </div>
+          <div class="mega-col">
+            <div class="mega-col-title">Credit Underwriting</div>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Transactions</div>
+              <div class="mega-item-desc">2 years of categorised transaction data</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Assets</div>
+              <div class="mega-item-desc">Point-in-time snapshots of finances</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Loan Disbursement</div>
+              <div class="mega-item-desc">Instant bank-account loan payouts</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Loan Repayments</div>
+              <div class="mega-item-desc">Faster VRP loan collections</div>
+            </a>
+          </div>
+          <div class="mega-col">
+            <div class="mega-col-title">Onboarding</div>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Link</div>
+              <div class="mega-item-desc">Bank connections for 4,000+ institutions</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Auth</div>
+              <div class="mega-item-desc">Verified account and routing numbers</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Identity Verification</div>
+              <div class="mega-item-desc">Global KYC and anti-fraud</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Identity</div>
+              <div class="mega-item-desc">Bank account-holder information</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Monitor</div>
+              <div class="mega-item-desc">AML and PEP screening</div>
+            </a>
+          </div>
+          <div class="mega-col">
+            <div class="mega-col-title">Financial Management</div>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Transactions</div>
+              <div class="mega-item-desc">Detailed transaction insights</div>
+            </a>
+            <a href="#" class="mega-item">
+              <div class="mega-item-label">Insights</div>
+              <div class="mega-item-desc">Cashflow analysis and spending patterns</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Use cases -->
+      <div class="nav-item" id="nav-usecases">
+        <button onclick="toggleNav('nav-usecases')">
+          Use cases
+          <svg class="nav-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+        <div class="dropdown dropdown-usecases">
+          <a href="#" class="dd-item">Lending &amp; underwriting</a>
+          <a href="#" class="dd-item">Payments</a>
+          <a href="#" class="dd-item">Recurring payments</a>
+          <a href="#" class="dd-item">Property management</a>
+          <a href="#" class="dd-item">Banking &amp; wealth</a>
+          <a href="#" class="dd-item">Crypto</a>
+          <a href="#" class="dd-item">iGaming</a>
+          <a href="#" class="dd-item">Personal finance</a>
+          <a href="#" class="dd-item">Business finance</a>
+        </div>
+      </div>
+
+      <!-- Developers -->
+      <div class="nav-item" id="nav-developers">
+        <button onclick="toggleNav('nav-developers')">
+          Developers
+          <svg class="nav-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+        <div class="dropdown dropdown-simple">
+          <a href="#" class="dd-item">Quickstart</a>
+          <a href="#" class="dd-item">API documentation</a>
+          <a href="#" class="dd-item">Libraries</a>
+          <a href="#" class="dd-item">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="nav-item" id="nav-resources">
+        <button onclick="toggleNav('nav-resources')">
+          Resources
+          <svg class="nav-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        </button>
+        <div class="dropdown dropdown-resources">
+          <div class="dropdown-section">
+            <div class="dropdown-section-title">For builders</div>
+            <a href="#" class="dd-item">Customer stories</a>
+            <a href="#" class="dd-item">Global coverage</a>
+            <a href="#" class="dd-item">Blog</a>
+            <a href="#" class="dd-item">Company</a>
+            <a href="#" class="dd-item">Contact</a>
+            <a href="#" class="dd-item">What is RivoFi</a>
+          </div>
+          <div class="dropdown-section">
+            <div class="dropdown-section-title">For users</div>
+            <a href="#" class="dd-item">Safety</a>
+            <a href="#" class="dd-item">How we handle data</a>
+            <a href="#" class="dd-item">Legal</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pricing -->
+      <div class="nav-item">
+        <a href="#pricing">Pricing</a>
+      </div>
+
     </div>
+
     <div class="nav-cta">
       <a href="#" class="btn-ghost">Log in</a>
-      <a href="#" class="btn-primary">Get API Keys</a>
+      <a href="#" class="btn-primary">Contact sales</a>
     </div>
     <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">
       <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -608,7 +811,7 @@ body {
   <div class="hero-grid-bg"></div>
   <div class="hero-inner">
     <div class="hero-content">
-      <div class="hero-badge"><class="dot"></span> Now supporting all major banks in Nepal</div>
+      <div class="hero-badge"><class="dot"></span> Supporting all major banks in Nepal</div>
       <h1>One API for <span class="highlight">all financial data</span> and payments</h1>
       <p>Connect to thousands of banks, process payments, and verify identities — all through a single, unified API platform built for developers.</p>
       <div class="hero-actions">
@@ -1011,7 +1214,7 @@ client = Client(
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="#" class="logo">
-          <div class="logo-mark">N</div>
+          <div class="logo-mark">R</div>
           RivoFi
         </a>
         <p>The unified API platform for open banking, payments, and financial data. Built for developers, trusted by enterprises.</p>
@@ -1067,6 +1270,19 @@ client = Client(
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Mega-menu toggle
+function toggleNav(id) {
+  const item = document.getElementById(id);
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.nav-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.nav-item')) {
+    document.querySelectorAll('.nav-item.open').forEach(el => el.classList.remove('open'));
+  }
 });
 
 // Tab switching
