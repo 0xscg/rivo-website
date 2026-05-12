@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusLink — Open Banking & Payments Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep-navy: #0f2b3c;
+  --navy: #143a4f;
+  --teal: #3ab0a2;
+  --teal-light: #5cc9bb;
+  --teal-glow: rgba(58, 176, 162, 0.12);
+  --teal-glow-strong: rgba(58, 176, 162, 0.22);
+  --coral: #e8715a;
+  --amber: #f0b35b;
+  --green: #3ab0a2;
+  --white: #ffffff;
+  --off-white: #f6f9fb;
+  --gray-100: #e9eff4;
+  --gray-200: #c7d3de;
+  --gray-400: #8da2b5;
+  --gray-600: #4b6478;
+  --gray-800: #1e3347;
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--gray-800);
+  background: var(--white);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--gray-100);
+  transition: box-shadow 0.3s;
+}
+.nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 72px;
+}
+.logo {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+  color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 10px;
+}
+.logo-mark {
+  width: 36px; height: 36px; background: linear-gradient(135deg, var(--teal), var(--navy));
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.1rem; font-weight: 800;
+}
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  text-decoration: none; color: var(--gray-600); font-size: 0.95rem;
+  font-weight: 500; transition: color 0.2s; position: relative;
+}
+.nav-links a:hover { color: var(--navy); }
+.nav-links a.has-dropdown::after {
+  content: '▾'; margin-left: 4px; font-size: 0.7rem;
+}
+.nav-cta { display: flex; gap: 12px; align-items: center; }
+.btn-ghost {
+  padding: 10px 20px; border-radius: 8px; text-decoration: none;
+  font-weight: 600; font-size: 0.9rem; color: var(--navy); transition: background 0.2s;
+}
+.btn-ghost:hover { background: var(--teal-glow); }
+.btn-primary {
+  padding: 10px 24px; border-radius: 8px; text-decoration: none;
+  font-weight: 600; font-size: 0.9rem; color: var(--white);
+  background: linear-gradient(135deg, var(--navy), #1a5c72);
+  transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(20,58,79,0.3); }
+.btn-teal {
+  padding: 14px 32px; border-radius: 10px; text-decoration: none;
+  font-weight: 600; font-size: 1rem; color: var(--navy);
+  background: var(--teal); border: none; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-teal:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(58,176,162,0.35); }
+.btn-outline {
+  padding: 14px 32px; border-radius: 10px; text-decoration: none;
+  font-weight: 600; font-size: 1rem; color: var(--white);
+  background: transparent; border: 2px solid rgba(255,255,255,0.3); cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-outline:hover { border-color: var(--teal); background: rgba(66,202,205,0.1); }
+.mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh; display: flex; align-items: center; position: relative;
+  background: var(--deep-navy);
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 70% 30%, rgba(58,176,162,0.18), transparent),
+    radial-gradient(ellipse 400px 400px at 20% 80%, rgba(20,58,79,0.25), transparent),
+    radial-gradient(ellipse 800px 600px at 50% 50%, rgba(58,176,162,0.06), transparent);
+}
+.hero-grid-bg {
+  position: absolute; inset: 0; opacity: 0.04;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-inner {
+  max-width: 1200px; margin: 0 auto; padding: 120px 32px 80px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+  position: relative; z-index: 2;
+}
+.hero-content { animation: fadeUp 0.8s ease-out; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(58,176,162,0.12); border: 1px solid rgba(58,176,162,0.25);
+  border-radius: 100px; padding: 8px 20px; margin-bottom: 28px;
+  font-size: 0.85rem; color: var(--teal); font-weight: 500;
+}
+.hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite; }
+.hero h1 {
+  font-family: var(--font-display); font-size: 3.8rem; font-weight: 800;
+  line-height: 1.1; color: var(--white); margin-bottom: 24px;
+  letter-spacing: -0.03em;
+}
+.hero h1 .highlight {
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: 1.2rem; color: var(--gray-200); max-width: 500px;
+  margin-bottom: 36px; line-height: 1.7;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-visual { animation: fadeUp 0.8s ease-out 0.2s both; }
+.terminal-card {
+  background: #0e2a38; border-radius: 16px; overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.25), 0 0 0 1px rgba(58,176,162,0.15);
+  position: relative;
+}
+.terminal-header {
+  display: flex; align-items: center; gap: 8px; padding: 16px 20px;
+  background: rgba(0,0,0,0.3); border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+.terminal-dot.r { background: #ff5f57; }
+.terminal-dot.y { background: #ffbd2e; }
+.terminal-dot.g { background: #28ca41; }
+.terminal-title { margin-left: 12px; color: var(--gray-400); font-size: 0.8rem; font-family: var(--font-mono); }
+.terminal-body { padding: 24px; font-family: var(--font-mono); font-size: 0.85rem; }
+.terminal-line { margin-bottom: 8px; display: flex; gap: 8px; }
+.terminal-line .prompt { color: var(--teal); }
+.terminal-line .cmd { color: var(--gray-200); }
+.terminal-line .comment { color: var(--gray-400); }
+.terminal-line .string { color: var(--amber); }
+.terminal-line .key { color: var(--teal-light); }
+.terminal-line .value { color: var(--coral); }
+.terminal-response {
+  margin-top: 16px; padding: 16px; border-radius: 8px;
+  background: rgba(58,176,162,0.08); border-left: 3px solid var(--teal);
+}
+.terminal-response .status { color: var(--green); font-weight: 500; }
+.terminal-typing::after {
+  content: '█'; animation: blink 1s step-end infinite; color: var(--teal);
+}
+
+/* ─── TRUST BAR ─── */
+.trust-bar {
+  background: var(--off-white); border-top: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--gray-100); padding: 40px 32px;
+}
+.trust-inner {
+  max-width: 1200px; margin: 0 auto; text-align: center;
+}
+.trust-label { font-size: 0.85rem; color: var(--gray-400); margin-bottom: 24px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+.trust-logos {
+  display: flex; justify-content: center; align-items: center; gap: 48px; flex-wrap: wrap;
+  opacity: 0.45;
+}
+.trust-logo {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.3rem;
+  color: var(--gray-600); letter-spacing: -0.02em;
+}
+
+/* ─── SECTION COMMON ─── */
+.section { padding: 100px 32px; }
+.section-dark { background: var(--deep-navy); color: var(--white); }
+.section-alt { background: var(--off-white); }
+.section-header {
+  text-align: center; max-width: 700px; margin: 0 auto 64px;
+}
+.section-label {
+  display: inline-block; font-size: 0.8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.15em; color: var(--teal);
+  margin-bottom: 16px;
+}
+.section-header h2 {
+  font-family: var(--font-display); font-size: 2.8rem; font-weight: 700;
+  line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 20px;
+}
+.section-dark .section-header h2 { color: var(--white); }
+.section-header p { font-size: 1.1rem; color: var(--gray-400); line-height: 1.7; }
+.section-dark .section-header p { color: var(--gray-200); }
+
+/* ─── PRODUCTS GRID ─── */
+.products-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.product-card {
+  background: var(--white); border-radius: 16px; padding: 36px;
+  border: 1px solid var(--gray-100); transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+.product-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--teal), var(--navy));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+}
+.product-card:hover { border-color: var(--teal); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+.product-card:hover::before { transform: scaleX(1); }
+.product-icon {
+  width: 56px; height: 56px; border-radius: 14px; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+}
+.product-icon.blue { background: linear-gradient(135deg, rgba(58,176,162,0.15), rgba(20,58,79,0.08)); color: var(--teal); }
+.product-icon.purple { background: linear-gradient(135deg, rgba(20,58,79,0.12), rgba(58,176,162,0.08)); color: var(--navy); }
+.product-icon.green { background: linear-gradient(135deg, rgba(58,176,162,0.15), rgba(92,201,187,0.08)); color: var(--green); }
+.product-card h3 {
+  font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 12px;
+}
+.product-card p { color: var(--gray-600); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6; }
+.product-link {
+  color: var(--teal); text-decoration: none; font-weight: 600; font-size: 0.9rem;
+  display: inline-flex; align-items: center; gap: 6px; transition: gap 0.2s;
+}
+.product-link:hover { gap: 10px; }
+
+/* ─── HOW IT WORKS ─── */
+.how-grid {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px;
+  position: relative;
+}
+.how-grid::before {
+  content: ''; position: absolute; top: 60px; left: 16%; right: 16%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  opacity: 0.3;
+}
+.how-step { text-align: center; position: relative; }
+.how-number {
+  width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 24px;
+  background: linear-gradient(135deg, var(--teal), #2aaeb1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+  color: var(--white); position: relative; z-index: 2;
+  box-shadow: 0 8px 24px rgba(58,176,162,0.3);
+}
+.how-step h3 {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
+  color: var(--white); margin-bottom: 12px;
+}
+.how-step p { color: var(--gray-200); font-size: 0.95rem; }
+
+/* ─── FEATURES SPLIT ─── */
+.feature-split {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  margin-bottom: 80px;
+}
+.feature-split:last-child { margin-bottom: 0; }
+.feature-split.reverse { direction: rtl; }
+.feature-split.reverse > * { direction: ltr; }
+.feature-visual {
+  background: linear-gradient(135deg, var(--navy), var(--deep-navy));
+  border-radius: 20px; padding: 40px; position: relative; overflow: hidden;
+  min-height: 350px;
+}
+.feature-visual::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 30%, rgba(66,202,205,0.1), transparent 60%);
+}
+.feature-content {}
+.feature-content .section-label { text-align: left; }
+.feature-content h3 {
+  font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 16px; line-height: 1.2;
+}
+.feature-content p { color: var(--gray-600); font-size: 1.05rem; margin-bottom: 24px; line-height: 1.7; }
+.feature-list { list-style: none; }
+.feature-list li {
+  padding: 10px 0; font-size: 0.95rem; color: var(--gray-600);
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.feature-list li::before {
+  content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0;
+  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  background: var(--teal-glow); border-radius: 6px; font-size: 0.8rem;
+}
+
+/* ─── API PLAYGROUND ─── */
+.playground {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+}
+.playground-req {
+  background: #0b2230; padding: 0;
+}
+.playground-res {
+  background: #0f2a3a; padding: 0; border-left: 1px solid rgba(255,255,255,0.06);
+}
+.playground-header {
+  padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.playground-header span {
+  font-family: var(--font-mono); font-size: 0.8rem; color: var(--gray-400);
+}
+.method-badge {
+  padding: 4px 10px; border-radius: 4px; font-family: var(--font-mono);
+  font-size: 0.75rem; font-weight: 600;
+}
+.method-badge.post { background: rgba(58,176,162,0.15); color: var(--teal); }
+.method-badge.ok { background: rgba(58,176,162,0.15); color: var(--green); }
+.playground-code {
+  padding: 24px; font-family: var(--font-mono); font-size: 0.82rem;
+  line-height: 1.8; color: var(--gray-200); overflow-x: auto;
+}
+.playground-code .k { color: var(--teal-light); }
+.playground-code .s { color: var(--amber); }
+.playground-code .n { color: var(--coral); }
+.playground-code .c { color: var(--gray-400); }
+.playground-code .b { color: var(--green); }
+
+/* ─── METRICS ─── */
+.metrics-grid {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+}
+.metric-card { text-align: center; }
+.metric-value {
+  font-family: var(--font-display); font-size: 3.2rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 8px; line-height: 1;
+}
+.metric-label { color: var(--gray-200); font-size: 0.95rem; }
+
+/* ─── PRICING ─── */
+.pricing-grid {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.pricing-card {
+  background: var(--white); border-radius: 16px; padding: 36px;
+  border: 1px solid var(--gray-100); text-align: center;
+  transition: all 0.3s; position: relative;
+}
+.pricing-card.featured {
+  border-color: var(--teal); transform: scale(1.04);
+  box-shadow: 0 20px 50px rgba(58,176,162,0.15);
+}
+.pricing-card.featured::before {
+  content: 'Most Popular'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--teal); color: var(--navy); font-weight: 700; font-size: 0.75rem;
+  padding: 6px 20px; border-radius: 100px;
+}
+.pricing-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+.pricing-card.featured:hover { transform: scale(1.04) translateY(-4px); }
+.pricing-tier {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
+  color: var(--navy); margin-bottom: 8px;
+}
+.pricing-price {
+  font-family: var(--font-display); font-weight: 800; font-size: 2.8rem;
+  color: var(--navy); margin-bottom: 4px; line-height: 1;
+}
+.pricing-price span { font-size: 1rem; font-weight: 500; color: var(--gray-400); }
+.pricing-desc { color: var(--gray-400); font-size: 0.9rem; margin-bottom: 28px; }
+.pricing-features { list-style: none; text-align: left; margin-bottom: 32px; }
+.pricing-features li {
+  padding: 8px 0; font-size: 0.9rem; color: var(--gray-600);
+  display: flex; align-items: center; gap: 10px;
+}
+.pricing-features li::before { content: '✓'; color: var(--teal); font-weight: 700; }
+.pricing-btn {
+  width: 100%; padding: 14px; border-radius: 10px; font-weight: 600;
+  font-size: 0.95rem; border: none; cursor: pointer; transition: all 0.2s;
+}
+.pricing-btn.outline { background: transparent; border: 2px solid var(--gray-200); color: var(--navy); }
+.pricing-btn.outline:hover { border-color: var(--teal); color: var(--teal); }
+.pricing-btn.filled { background: var(--navy); color: var(--white); }
+.pricing-btn.filled:hover { background: #1a5c72; }
+
+/* ─── DEVELOPER SECTION ─── */
+.dev-tabs {
+  max-width: 800px; margin: 0 auto;
+}
+.tabs-nav {
+  display: flex; gap: 4px; margin-bottom: 24px; justify-content: center;
+  background: rgba(255,255,255,0.06); border-radius: 12px; padding: 4px;
+  max-width: fit-content; margin-left: auto; margin-right: auto;
+}
+.tab-btn {
+  padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer;
+  font-family: var(--font-mono); font-size: 0.85rem; font-weight: 500;
+  background: transparent; color: var(--gray-400); transition: all 0.2s;
+}
+.tab-btn.active { background: var(--teal); color: var(--navy); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.code-block {
+  background: #0b2230; border-radius: 16px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.code-header {
+  padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.code-header span { font-family: var(--font-mono); font-size: 0.8rem; color: var(--gray-400); }
+.copy-btn {
+  background: rgba(255,255,255,0.06); border: none; color: var(--gray-400);
+  padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;
+  font-family: var(--font-mono); transition: all 0.2s;
+}
+.copy-btn:hover { background: var(--teal); color: var(--navy); }
+.code-body {
+  padding: 24px; font-family: var(--font-mono); font-size: 0.85rem;
+  line-height: 1.8; overflow-x: auto; color: var(--gray-200);
+}
+
+/* ─── CTA ─── */
+.cta-section {
+  padding: 120px 32px; text-align: center; position: relative;
+  background: linear-gradient(135deg, var(--deep-navy) 0%, var(--navy) 50%, #1a5c72 100%);
+  overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 500px 300px at 50% 50%, rgba(58,176,162,0.15), transparent);
+}
+.cta-content { position: relative; z-index: 2; }
+.cta-content h2 {
+  font-family: var(--font-display); font-size: 3rem; font-weight: 800;
+  color: var(--white); margin-bottom: 20px; line-height: 1.15;
+}
+.cta-content p { font-size: 1.15rem; color: var(--gray-200); max-width: 600px; margin: 0 auto 36px; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* ─── FOOTER ─── */
+.footer {
+  background: var(--deep-navy); border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 64px 32px 32px;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-brand .logo { color: var(--white); margin-bottom: 16px; }
+.footer-brand p { color: var(--gray-400); font-size: 0.9rem; max-width: 280px; line-height: 1.6; }
+.footer-col h4 {
+  font-family: var(--font-display); font-weight: 600; color: var(--white);
+  margin-bottom: 16px; font-size: 0.95rem;
+}
+.footer-col a {
+  display: block; color: var(--gray-400); text-decoration: none;
+  font-size: 0.9rem; margin-bottom: 10px; transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--teal); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-bottom p { color: var(--gray-400); font-size: 0.85rem; }
+.footer-bottom-links { display: flex; gap: 24px; }
+.footer-bottom-links a { color: var(--gray-400); text-decoration: none; font-size: 0.85rem; }
+.footer-bottom-links a:hover { color: var(--teal); }
+
+/* ─── DASHBOARD PREVIEW ─── */
+.dash-preview {
+  position: relative; z-index: 1;
+}
+.dash-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 20px; margin-bottom: 16px;
+}
+.dash-card-title {
+  font-size: 0.8rem; color: var(--gray-400); margin-bottom: 12px;
+  font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.dash-stat {
+  font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+  color: var(--white); margin-bottom: 4px;
+}
+.dash-change { font-size: 0.85rem; color: var(--green); font-weight: 500; }
+.dash-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.dash-bar-label { font-size: 0.8rem; color: var(--gray-400); width: 80px; }
+.dash-bar { flex: 1; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.06); overflow: hidden; }
+.dash-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--teal), var(--teal-light)); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.fade-in {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .hero h1 { font-size: 2.8rem; }
+  .hero p { margin: 0 auto 36px; }
+  .hero-actions { justify-content: center; }
+  .hero-visual { max-width: 600px; margin: 0 auto; }
+  .products-grid { grid-template-columns: 1fr 1fr; }
+  .feature-split { grid-template-columns: 1fr; gap: 40px; }
+  .feature-split.reverse { direction: ltr; }
+  .playground { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr 1fr; }
+  .pricing-card.featured { transform: none; }
+  .pricing-card.featured:hover { transform: translateY(-4px); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .mobile-menu-btn { display: block; }
+  .hero h1 { font-size: 2.2rem; }
+  .hero p { font-size: 1.05rem; }
+  .section { padding: 64px 20px; }
+  .section-header h2 { font-size: 2rem; }
+  .products-grid { grid-template-columns: 1fr; }
+  .how-grid { grid-template-columns: 1fr; gap: 32px; }
+  .how-grid::before { display: none; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .playground-code { font-size: 0.75rem; }
+  .cta-content h2 { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAVIGATION ─── -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">N</div>
+      NexusLink
+    </a>
+    <div class="nav-links">
+      <a href="#products" class="has-dropdown">Products</a>
+      <a href="#developers">Developers</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#">Docs</a>
+      <a href="#">Company</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#" class="btn-ghost">Log in</a>
+      <a href="#" class="btn-primary">Get API Keys</a>
+    </div>
+    <button class="mobile-menu-btn" onclick="document.querySelector('.nav-links').classList.toggle('show')">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge"><span class="dot"></span> Now live in 30+ countries</div>
+      <h1>One API for <span class="highlight">all financial data</span> and payments</h1>
+      <p>Connect to thousands of banks, process payments, and verify identities — all through a single, unified API platform built for developers.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-teal">Start Building Free →</a>
+        <a href="#" class="btn-outline">Talk to Sales</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <span class="terminal-dot r"></span>
+          <span class="terminal-dot y"></span>
+          <span class="terminal-dot g"></span>
+          <span class="terminal-title">nexuslink — API request</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <span class="comment">// Initiate a bank connection</span>
+          </div>
+          <div class="terminal-line">
+            <span class="cmd"><span class="key">const</span> link = <span class="key">await</span> nexus.<span class="key">createLink</span>({</span>
+          </div>
+          <div class="terminal-line">
+            <span class="cmd">  user_id: <span class="string">"usr_a1b2c3"</span>,</span>
+          </div>
+          <div class="terminal-line">
+            <span class="cmd">  products: [<span class="string">"auth"</span>, <span class="string">"transactions"</span>],</span>
+          </div>
+          <div class="terminal-line">
+            <span class="cmd">  country: <span class="string">"GB"</span></span>
+          </div>
+          <div class="terminal-line">
+            <span class="cmd">});</span>
+          </div>
+          <div class="terminal-response">
+            <div class="terminal-line"><span class="status">✓ 200 OK</span> <span class="comment">— 142ms</span></div>
+            <div class="terminal-line"><span class="cmd">{</span></div>
+            <div class="terminal-line"><span class="cmd">  <span class="key">"link_token"</span>: <span class="string">"link_tok_8x9..."</span>,</span></div>
+            <div class="terminal-line"><span class="cmd">  <span class="key">"expiration"</span>: <span class="string">"2026-05-12T..."</span>,</span></div>
+            <div class="terminal-line"><span class="cmd">  <span class="key">"institutions"</span>: <span class="value">4,291</span></span></div>
+            <div class="terminal-line"><span class="cmd">}<span class="terminal-typing"></span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TRUST BAR ─── -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-label">Trusted by leading fintechs and enterprises</div>
+    <div class="trust-logos">
+      <span class="trust-logo">Monzo</span>
+      <span class="trust-logo">Revolut</span>
+      <span class="trust-logo">Starling</span>
+      <span class="trust-logo">Wise</span>
+      <span class="trust-logo">Zopa</span>
+      <span class="trust-logo">GoCardless</span>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PRODUCTS ─── -->
+<section class="section" id="products">
+  <div class="section-header fade-in">
+    <span class="section-label">Products</span>
+    <h2>Everything you need to build financial products</h2>
+    <p>Modular APIs that work together. Pick what you need, from account connections to payment processing.</p>
+  </div>
+  <div class="products-grid">
+    <div class="product-card fade-in">
+      <div class="product-icon blue">🔗</div>
+      <h3>Account Link</h3>
+      <p>Let users securely connect bank accounts in seconds. Support for 4,000+ institutions across 30 countries.</p>
+      <a href="#" class="product-link">Learn more →</a>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-icon purple">📊</div>
+      <h3>Transactions</h3>
+      <p>Access up to 24 months of enriched, categorised transaction data with real-time webhook updates.</p>
+      <a href="#" class="product-link">Learn more →</a>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-icon green">✓</div>
+      <h3>Auth & Identity</h3>
+      <p>Verify account ownership, routing details, and holder identity — all in a single API call.</p>
+      <a href="#" class="product-link">Learn more →</a>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-icon blue">💳</div>
+      <h3>Payments</h3>
+      <p>Initiate bank-to-bank payments via Open Banking, SEPA, Faster Payments, and ACH with a unified interface.</p>
+      <a href="#" class="product-link">Learn more →</a>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-icon purple">🛡️</div>
+      <h3>Fraud Detection</h3>
+      <p>ML-powered risk scoring, account verification, and anti-money laundering checks at the API level.</p>
+      <a href="#" class="product-link">Learn more →</a>
+    </div>
+    <div class="product-card fade-in">
+      <div class="product-icon green">📈</div>
+      <h3>Insights</h3>
+      <p>Cashflow analysis, income verification, and spending patterns — derived data ready for underwriting.</p>
+      <a href="#" class="product-link">Learn more →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="section section-dark">
+  <div class="section-header fade-in">
+    <span class="section-label">How It Works</span>
+    <h2>Go live in three steps</h2>
+    <p>From signup to production in days, not months.</p>
+  </div>
+  <div class="how-grid">
+    <div class="how-step fade-in">
+      <div class="how-number">1</div>
+      <h3>Get your API keys</h3>
+      <p>Sign up, grab your sandbox keys, and start testing in under 5 minutes with full documentation.</p>
+    </div>
+    <div class="how-step fade-in">
+      <div class="how-number">2</div>
+      <h3>Integrate the SDK</h3>
+      <p>Drop in our client libraries for Node, Python, Go, Ruby, or Java. Pre-built UI components included.</p>
+    </div>
+    <div class="how-step fade-in">
+      <div class="how-number">3</div>
+      <h3>Launch to production</h3>
+      <p>Switch from sandbox to live. Our compliance team helps with regulatory requirements in each market.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FEATURES ─── -->
+<section class="section">
+  <div class="feature-split fade-in">
+    <div class="feature-visual">
+      <div class="dash-preview">
+        <div class="dash-card">
+          <div class="dash-card-title">API Calls Today</div>
+          <div class="dash-stat">2.4M</div>
+          <div class="dash-change">↑ 12.3% vs yesterday</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-title">Success Rate by Provider</div>
+          <div class="dash-bar-row"><span class="dash-bar-label">Barclays</span><div class="dash-bar"><div class="dash-bar-fill" style="width:98%"></div></div><span style="color:#5cc9bb;font-size:0.8rem">98%</span></div>
+          <div class="dash-bar-row"><span class="dash-bar-label">HSBC</span><div class="dash-bar"><div class="dash-bar-fill" style="width:96%"></div></div><span style="color:#5cc9bb;font-size:0.8rem">96%</span></div>
+          <div class="dash-bar-row"><span class="dash-bar-label">Lloyds</span><div class="dash-bar"><div class="dash-bar-fill" style="width:99%"></div></div><span style="color:#5cc9bb;font-size:0.8rem">99%</span></div>
+          <div class="dash-bar-row"><span class="dash-bar-label">Monzo</span><div class="dash-bar"><div class="dash-bar-fill" style="width:99.5%"></div></div><span style="color:#5cc9bb;font-size:0.8rem">99.5%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="feature-content">
+      <span class="section-label">Dashboard</span>
+      <h3>Real-time visibility into every connection</h3>
+      <p>Monitor API health, track connection rates, and debug issues from a single dashboard. No more flying blind.</p>
+      <ul class="feature-list">
+        <li>Real-time connection monitoring and alerting</li>
+        <li>Per-institution success rates and latency tracking</li>
+        <li>Webhook delivery logs with retry controls</li>
+        <li>Team permissions and audit trails</li>
+      </ul>
+    </div>
+  </div>
+  <div class="feature-split reverse fade-in">
+    <div class="feature-visual" style="display:flex;align-items:center;justify-content:center;">
+      <div style="text-align:center; position:relative; z-index:1;">
+        <div style="display:inline-grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:2rem; margin-bottom:8px;">🇬🇧</div>
+            <div style="color:#fff; font-size:0.85rem; font-weight:600;">UK</div>
+            <div style="color:#3ab0a2; font-size:0.75rem;">680+ banks</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:2rem; margin-bottom:8px;">🇪🇺</div>
+            <div style="color:#fff; font-size:0.85rem; font-weight:600;">Europe</div>
+            <div style="color:#3ab0a2; font-size:0.75rem;">2,400+ banks</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:2rem; margin-bottom:8px;">🇺🇸</div>
+            <div style="color:#fff; font-size:0.85rem; font-weight:600;">USA</div>
+            <div style="color:#3ab0a2; font-size:0.75rem;">1,200+ banks</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:2rem; margin-bottom:8px;">🇮🇳</div>
+            <div style="color:#fff; font-size:0.85rem; font-weight:600;">India</div>
+            <div style="color:#3ab0a2; font-size:0.75rem;">UPI + AA</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:2rem; margin-bottom:8px;">🇧🇷</div>
+            <div style="color:#fff; font-size:0.85rem; font-weight:600;">Brazil</div>
+            <div style="color:#3ab0a2; font-size:0.75rem;">Open Finance</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:20px; text-align:center;">
+            <div style="font-size:2rem; margin-bottom:8px;">🌏</div>
+            <div style="color:#fff; font-size:0.85rem; font-weight:600;">APAC</div>
+            <div style="color:#3ab0a2; font-size:0.75rem;">Expanding</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="feature-content">
+      <span class="section-label">Global Coverage</span>
+      <h3>One integration, 30+ countries</h3>
+      <p>Write your integration once and access banks worldwide. We handle the regulatory complexity, provider differences, and local payment rails.</p>
+      <ul class="feature-list">
+        <li>Open Banking (PSD2), CDR, and FDX compliant</li>
+        <li>Local payment rails: Faster Payments, SEPA, ACH, UPI</li>
+        <li>Multi-currency support with FX conversion</li>
+        <li>In-region data residency options</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─── METRICS ─── -->
+<section class="section section-dark">
+  <div class="section-header fade-in">
+    <span class="section-label">Scale</span>
+    <h2>Built for production workloads</h2>
+  </div>
+  <div class="metrics-grid fade-in">
+    <div class="metric-card">
+      <div class="metric-value">4,291</div>
+      <div class="metric-label">Connected institutions</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">99.97%</div>
+      <div class="metric-label">API uptime SLA</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">142ms</div>
+      <div class="metric-label">Median response time</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">2B+</div>
+      <div class="metric-label">API calls / month</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DEVELOPERS ─── -->
+<section class="section section-dark" id="developers" style="padding-top:0;">
+  <div class="section-header fade-in">
+    <span class="section-label">For Developers</span>
+    <h2>APIs that developers love</h2>
+    <p>Clean RESTful endpoints, SDKs in every language, and sandbox environments that mirror production.</p>
+  </div>
+  <div class="dev-tabs fade-in">
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('node')">Node.js</button>
+      <button class="tab-btn" onclick="switchTab('python')">Python</button>
+      <button class="tab-btn" onclick="switchTab('curl')">cURL</button>
+    </div>
+    <div class="tab-content active" id="tab-node">
+      <div class="code-block">
+        <div class="code-header">
+          <span>get-transactions.js</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <div class="code-body">
+<span class="k">import</span> NexusLink <span class="k">from</span> <span class="s">'nexuslink-node'</span>;
+<br><br>
+<span class="k">const</span> client = <span class="k">new</span> NexusLink({
+<br>  clientId: process.env.<span class="n">NEXUS_CLIENT_ID</span>,
+<br>  secret: process.env.<span class="n">NEXUS_SECRET</span>,
+<br>  env: <span class="s">'production'</span>
+<br>});
+<br><br>
+<span class="c">// Fetch enriched transactions</span>
+<br><span class="k">const</span> { transactions } = <span class="k">await</span> client.transactions.<span class="b">get</span>({
+<br>  access_token: <span class="s">"access_tok_x9f..."</span>,
+<br>  start_date: <span class="s">"2026-04-01"</span>,
+<br>  end_date: <span class="s">"2026-05-01"</span>
+<br>});
+<br><br>
+console.log(<span class="s">`Found </span><span class="n">${transactions.length}</span><span class="s"> transactions`</span>);
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-python">
+      <div class="code-block">
+        <div class="code-header">
+          <span>get_transactions.py</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <div class="code-body">
+<span class="k">from</span> nexuslink <span class="k">import</span> Client
+<br><br>
+client = Client(
+<br>  client_id=os.environ[<span class="s">"NEXUS_CLIENT_ID"</span>],
+<br>  secret=os.environ[<span class="s">"NEXUS_SECRET"</span>],
+<br>  environment=<span class="s">"production"</span>
+<br>)
+<br><br>
+<span class="c"># Fetch enriched transactions</span>
+<br>response = client.transactions.<span class="b">get</span>(
+<br>  access_token=<span class="s">"access_tok_x9f..."</span>,
+<br>  start_date=<span class="s">"2026-04-01"</span>,
+<br>  end_date=<span class="s">"2026-05-01"</span>
+<br>)
+<br><br>
+<span class="b">print</span>(<span class="s">f"Found </span>{len(response.transactions)}<span class="s"> transactions"</span>)
+        </div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-curl">
+      <div class="code-block">
+        <div class="code-header">
+          <span>Terminal</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <div class="code-body">
+<span class="b">curl</span> <span class="s">https://api.nexuslink.io/v1/transactions/get</span> \
+<br>  -X <span class="n">POST</span> \
+<br>  -H <span class="s">"Content-Type: application/json"</span> \
+<br>  -d <span class="s">'{
+<br>    "client_id": "YOUR_CLIENT_ID",
+<br>    "secret": "YOUR_SECRET",
+<br>    "access_token": "access_tok_x9f...",
+<br>    "start_date": "2026-04-01",
+<br>    "end_date": "2026-05-01"
+<br>  }'</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRICING ─── -->
+<section class="section section-alt" id="pricing">
+  <div class="section-header fade-in">
+    <span class="section-label">Pricing</span>
+    <h2>Simple, transparent pricing</h2>
+    <p>Start free. Scale as you grow. No hidden fees.</p>
+  </div>
+  <div class="pricing-grid fade-in">
+    <div class="pricing-card">
+      <div class="pricing-tier">Sandbox</div>
+      <div class="pricing-price">Free</div>
+      <div class="pricing-desc">For testing & prototyping</div>
+      <ul class="pricing-features">
+        <li>100 API calls / month</li>
+        <li>Sandbox environment</li>
+        <li>All products included</li>
+        <li>Community support</li>
+        <li>Documentation access</li>
+      </ul>
+      <button class="pricing-btn outline">Start Free</button>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-tier">Growth</div>
+      <div class="pricing-price">£299<span>/mo</span></div>
+      <div class="pricing-desc">For scaling products</div>
+      <ul class="pricing-features">
+        <li>10,000 API calls / month</li>
+        <li>Production environment</li>
+        <li>Webhooks & real-time data</li>
+        <li>Priority email support</li>
+        <li>Custom branding on Link</li>
+        <li>99.9% uptime SLA</li>
+      </ul>
+      <button class="pricing-btn filled">Get Started</button>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-tier">Enterprise</div>
+      <div class="pricing-price">Custom</div>
+      <div class="pricing-desc">For high-volume needs</div>
+      <ul class="pricing-features">
+        <li>Unlimited API calls</li>
+        <li>Dedicated infrastructure</li>
+        <li>Custom SLA (99.99%)</li>
+        <li>Dedicated account manager</li>
+        <li>On-premise deployment option</li>
+        <li>Compliance assistance</li>
+      </ul>
+      <button class="pricing-btn outline">Contact Sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-section">
+  <div class="cta-content fade-in">
+    <h2>Ready to build the future<br>of financial services?</h2>
+    <p>Join thousands of developers building with NexusLink. Get your API keys in under 2 minutes.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-teal">Get API Keys — Free →</a>
+      <a href="#" class="btn-outline">Read the Docs</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-mark">N</div>
+          NexusLink
+        </a>
+        <p>The unified API platform for open banking, payments, and financial data. Built for developers, trusted by enterprises.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <a href="#">Account Link</a>
+        <a href="#">Transactions</a>
+        <a href="#">Auth & Identity</a>
+        <a href="#">Payments</a>
+        <a href="#">Fraud Detection</a>
+        <a href="#">Insights</a>
+      </div>
+      <div class="footer-col">
+        <h4>Developers</h4>
+        <a href="#">Documentation</a>
+        <a href="#">API Reference</a>
+        <a href="#">SDKs & Libraries</a>
+        <a href="#">Sandbox</a>
+        <a href="#">Status Page</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Blog</a>
+        <a href="#">Press</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Security</a>
+        <a href="#">GDPR</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 NexusLink Ltd. Registered in England & Wales. FCA Authorised.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Twitter</a>
+        <a href="#">GitHub</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Tab switching
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Copy code
+function copyCode(btn) {
+  const code = btn.closest('.code-block').querySelector('.code-body').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
